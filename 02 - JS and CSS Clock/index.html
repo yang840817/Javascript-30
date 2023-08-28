@@ -59,9 +59,66 @@
         background: black;
         position: absolute;
         top: 50%;
+        rotate: 90deg;
+        transform-origin: right center;
       }
     </style>
 
-    <script></script>
+    <script>
+      const hourHand = document.querySelector(".hour-hand");
+      const minHand = document.querySelector(".min-hand");
+      const secondHand = document.querySelector(".second-hand");
+      setClock();
+
+      setInterval(setClock, 1000);
+
+      function setClock() {
+        const time = new Date();
+        // //一圈360度 一分鐘60秒 秒針一秒轉6度
+        const nowSecond = time.getSeconds();
+        secondHand.style.rotate = `${nowSecond * 6 + 90}deg`;
+
+        // //一圈360度 一小時60分鐘 分針1分鐘轉6度 = 60秒轉6度 ＝1秒轉0.1度
+        const nowMin = time.getMinutes();
+        minHand.style.rotate = `${nowMin * 6 + nowSecond * 0.1 + 90}deg`;
+
+        // //一圈360度 一圈12小時 時針1小時轉30度 = 1分鐘轉0.5度
+        const nowHour = time.getHours();
+        hourHand.style.rotate = `${nowHour * 30 + nowMin * 0.5 + 90}deg`;
+      }
+
+      // const time = new Date();
+      // const nowHour = time.getHours();
+      // const nowMin = time.getMinutes();
+      // const nowSecond = time.getSeconds();
+      // const hour = document.querySelector(".hour-hand");
+      // const min = document.querySelector(".min-hand");
+      // const second = document.querySelector(".second-hand");
+
+      // let baseHourDegree = 90 + (nowHour % 12) * 30;
+      // let baseMinutesDegree = 90 + nowMin * 6;
+      // let baseSecondDegree = 90 + nowSecond * 6;
+
+      // hour.style.rotate = `${baseHourDegree}deg`;
+      // min.style.rotate = `${baseMinutesDegree}deg`;
+      // second.style.rotate = `${baseSecondDegree}deg`;
+      // //一圈360度 一分鐘60秒 秒針一秒轉6度
+      // //一圈360度 一小時60分鐘 分針1分鐘轉6度 = 60秒轉6度 ＝10秒轉1度
+      // //一圈360度 一圈12小時 時針1小時轉30度 = 1分鐘轉0.5度
+      // setInterval(() => {
+      //   baseHourDegree += 0.5;
+      //   hour.style.rotate = `${baseHourDegree}deg`;
+      // }, 60000);
+
+      // setInterval(() => {
+      //   baseMinutesDegree += 1;
+      //   min.style.rotate = `${baseMinutesDegree}deg`;
+      // }, 10000);
+
+      // setInterval(() => {
+      //   baseSecondDegree += 6;
+      //   second.style.rotate = `${baseSecondDegree}deg`;
+      // }, 1000);
+    </script>
   </body>
 </html>
