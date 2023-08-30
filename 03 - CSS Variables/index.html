@@ -41,7 +41,18 @@
       /*
       misc styles, nothing to do with CSS variables
     */
-
+      :root {
+        --spacing: 10px;
+        --blur: 0px;
+        --base: #ffc600;
+      }
+      .hl {
+        color: var(--base);
+      }
+      img {
+        border: var(--spacing) var(--base) solid;
+        filter: blur(var(--blur));
+      }
       body {
         text-align: center;
         background: #193549;
@@ -60,6 +71,47 @@
       }
     </style>
 
-    <script></script>
+    <script>
+      //改用 CSS variables
+      const controlInputList = document.querySelectorAll("input");
+      controlInputList.forEach((input) => {
+        input.addEventListener("input", changeStyle);
+      });
+
+      function changeStyle(e) {
+        const unit = e.target.dataset.sizing ?? "";
+        document.documentElement.style.setProperty(
+          `--${e.target.id}`,
+          `${e.target.value}${unit}`
+        );
+        // document.documentElement.style[
+        //   `--${e.target.id}`
+        // ] = `${e.target.value}${unit}`;
+      }
+      //原始寫法
+      // const spacingControl = document.querySelector("input#spacing");
+      // const blurControl = document.querySelector("input#blur");
+      // const colorControl = document.querySelector("input#base");
+      // const imgContainer = document.querySelector("img");
+      // const hl = document.querySelector(".hl");
+
+      // const controlInputList = document.querySelectorAll("input");
+      // controlInputList.forEach((input) => {
+      //   input.addEventListener("input", changeStyle);
+      // });
+
+      // function changeStyle(e) {
+      //   if (e.target.id === "spacing") {
+      //     imgContainer.style.border = `${colorControl.value} ${e.target.value}px solid`;
+      //   }
+      //   if (e.target.id === "blur") {
+      //     imgContainer.style.filter = `blur(${e.target.value}px)`;
+      //   }
+      //   if (e.target.id === "base") {
+      //     imgContainer.style.border = `${e.target.value} ${spacingControl.value}px solid`;
+      //     hl.style.color = `${colorControl.value}`;
+      //   }
+      // }
+    </script>
   </body>
 </html>
