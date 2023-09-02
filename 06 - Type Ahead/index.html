@@ -17,6 +17,141 @@
     <script>
       const endpoint =
         "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
+      const search = document.querySelector(".search");
+      const suggestions = document.querySelector(".suggestions");
+      const nf = new Intl.NumberFormat();
+
+      main();
+
+      async function main() {
+        const data = await getData(endpoint);
+        if (data) {
+          search.addEventListener("input", (e) => {
+            if (e.target.value === "") return renderAllCities(data);
+            const searchReg = new RegExp(`(${e.target.value})`, "ig");
+            const matchesCities = filterAndFormatCities(data, searchReg);
+            renderMatchesCity(matchesCities, searchReg);
+            console.log(matchesCities);
+          });
+        }
+      }
+
+      function filterAndFormatCities(data, searchReg) {
+        return data
+          .filter(
+            (item) => searchReg.test(item.city) || searchReg.test(item.state)
+          )
+          .map((item) => {
+            return {
+              name: `${item.city}, ${item.state}`
+                .split(searchReg)
+                .filter((i) => i !== ""),
+              population: nf.format(item.population),
+            };
+          });
+      }
+
+      function renderAllCities(data) {
+        const fragment = document.createDocumentFragment();
+        data.forEach((item) => {
+          const li = document.createElement("li");
+          const name = document.createElement("span");
+          name.classList.add("name");
+          name.innerText = `${item.city}, ${item.state}`;
+
+          const population = document.createElement("span");
+          population.classList.add("population");
+          population.textContent = nf.format(item.population);
+          li.appendChild(name);
+          li.appendChild(population);
+          fragment.appendChild(li);
+        });
+        while (suggestions.firstChild) {
+          suggestions.removeChild(suggestions.firstChild);
+        }
+        suggestions.appendChild(fragment);
+      }
+
+      function renderMatchesCity(cities, searchReg) {
+        const fragment = document.createDocumentFragment();
+        cities.forEach((city) => {
+          const li = document.createElement("li");
+
+          const name = document.createElement("span");
+          name.classList.add("name");
+          city.name.forEach((text) => {
+            const textSlice = document.createElement("span");
+            if (searchReg.test(text)) textSlice.classList.add("hl");
+            textSlice.innerText = text;
+            name.appendChild(textSlice);
+          });
+          const population = document.createElement("span");
+          population.classList.add("population");
+          population.textContent = city.population;
+          li.appendChild(name);
+          li.appendChild(population);
+          fragment.appendChild(li);
+        });
+        while (suggestions.firstChild) {
+          suggestions.removeChild(suggestions.firstChild);
+        }
+        suggestions.appendChild(fragment);
+      }
+
+      //fetch API
+      async function getData(endpoint) {
+        const response = await fetch(endpoint);
+        if (response.ok) return await response.json();
+      }
+
+      // function getData(endpoint) {
+      //   return fetch(endpoint)
+      //     .then((response) => {
+      //       console.log(response.status);
+      //       if (response.status === 200) return response.json();
+      //     })
+      //     .then((data) => {
+      //       return data;
+      //     })
+      //     .catch((err) => console.log(err));
+      // }
+
+      //innerHTML 寫法
+
+      // main_html();
+
+      async function main_html() {
+        const data = await getData(endpoint);
+        if (data) {
+          search.addEventListener("input", (e) => {
+            if (e.target.value === "") return renderAllCities(data);
+            const searchText = e.target.value;
+            const searchReg = new RegExp(`(${e.target.value})`, "ig");
+            filterAndRenderCity(data, searchReg, searchText);
+          });
+        }
+      }
+
+      function filterAndRenderCity(data, searchReg, searchText) {
+        const fragment = document.createDocumentFragment();
+        data
+          .filter(
+            (item) => searchReg.test(item.city) || searchReg.test(item.state)
+          )
+          .forEach((item) => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+          <span class="name">${(item.city + ", " + item.state).replace(
+            searchReg,
+            `<span class="hl">${searchText}</span>`
+          )}</span>
+          <span class="population">${nf.format(item.population)}</span>`;
+
+            fragment.appendChild(li);
+          });
+        suggestions.innerHTML = "";
+        suggestions.appendChild(fragment);
+      }
     </script>
   </body>
 </html>
