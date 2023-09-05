@@ -21,28 +21,80 @@
       }
 
       // Regular
-
+      console.log("Hello World");
       // Interpolated
-
+      // %s String
+      const str = "Tim";
+      console.log("Hello, my name is %s .", str);
+      // %o / %O Object
+      const obj = { name: "Tim", homeTown: "Tainan", phone: "0900123456" };
+      console.log("My information is %o,please check", obj);
+      // %d integer
+      const num = 1.23;
+      console.log("print number %d", num);
+      // %f float number
+      console.log("print Interger %d", num);
       // Styled
 
+      const css = "color:red; font-size:50px";
+      const markcss = "color:white; font-size:50px;background:black";
+      console.log("%cSTOP%c!!!", css, markcss);
       // warning!
-
+      console.warn("warning");
       // Error :|
+      console.error("error");
 
       // Info
+      console.info("This is Console info");
 
       // Testing
-
+      const myInfo = { name: "Tim", homeTown: "Tainan", phone: "0900123456" };
+      console.assert(
+        myInfo.homeTown === "Taipei",
+        `No my homeTown is ${myInfo.homeTown}`
+      );
       // clearing
-
+      console.clear();
       // Viewing DOM Elements
-
+      const p = document.querySelector("p");
+      console.log(p);
+      console.dir(p);
       // Grouping together
+      console.log("最外面");
+      console.group("第1層");
+      console.log("第1層內");
+      console.group("第2層");
+      console.log("第2層內");
+      console.groupEnd("關掉第2層");
+      console.log("回到1層內");
+      console.groupEnd("關掉第1層");
+      console.log("回到最外面");
+
+      console.groupCollapsed("Hello I'm Tim , below is my information");
+      console.log(`My name is ${myInfo.name}`);
+      console.log(`My hometown is ${myInfo.homeTown}`);
+      console.log(`My phone is ${myInfo.phone}`);
+      console.groupEnd();
 
       // counting
-
+      const food = ["noodle", "rice", "fruit"];
+      for (let i = 0; i < 10; i++) {
+        const randomIndex = Math.floor(Math.random() * food.length);
+        console.count(food[randomIndex]);
+      }
       // timing
+      console.time("fetching data");
+
+      fetch("https://api.github.com/users/wesbos")
+        .then((data) => data.json())
+        .then((data) => {
+          console.timeEnd("fetching data");
+          console.log(data);
+        });
+      //  table
+
+      console.table(myInfo);
+      console.table(food);
     </script>
   </body>
 </html>
