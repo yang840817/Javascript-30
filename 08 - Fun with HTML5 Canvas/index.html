@@ -6,8 +6,51 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <canvas id="draw" width="800" height="800"></canvas>
-    <script></script>
+    <canvas id="draw" width="800" height="800">this is canvas</canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
+      const ctx = canvas.getContext("2d");
+      let isDrawing = false;
+      let X;
+      let Y;
+      let lineWidth = 0;
+      let distance = 1;
+      let color = 0;
+      let colorDistance = 1;
+
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        X = e.clientX;
+        Y = e.clientY;
+        console.log(e);
+      });
+      canvas.addEventListener("mousemove", (e) => {
+        if (isDrawing) {
+          drawLine(ctx, X, Y, e.clientX, e.clientY);
+          X = e.clientX;
+          Y = e.clientY;
+        }
+      });
+      canvas.addEventListener("mouseup", (e) => (isDrawing = false));
+      canvas.addEventListener("mouseleave", (e) => (isDrawing = false));
+
+      function drawLine(ctx, pastX, pastY, currentX, currentY) {
+        ctx.beginPath();
+        ctx.lineCap = "round";
+        if (color === 360) colorDistance = -3;
+        if (color === 0) colorDistance = 3;
+        color += colorDistance;
+        if (lineWidth === 100) distance = -1;
+        if (lineWidth === 0) distance = 1;
+        lineWidth += distance;
+
+        ctx.strokeStyle = `hsl(${color},100%,50%)`;
+        ctx.lineWidth = lineWidth;
+        ctx.moveTo(pastX, pastY);
+        ctx.lineTo(currentX, currentY);
+        ctx.stroke();
+      }
+    </script>
 
     <style>
       html,
