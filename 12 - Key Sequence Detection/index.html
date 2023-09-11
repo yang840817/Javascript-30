@@ -7,6 +7,20 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <script></script>
+    <script>
+      document.cookie = `cornify=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+      const secretWords = "Tim";
+      const arr = [];
+      document.addEventListener("keyup", (e) => {
+        if (arr.length === secretWords.length) arr.splice(0, 1);
+        arr.push(e.key);
+        // arr.splice(-secretWords.length - 1, arr.length - secretWords.length);
+        if (
+          arr.join("").toLocaleLowerCase() === secretWords.toLocaleLowerCase()
+        )
+          cornify_add();
+        console.log(arr);
+      });
+    </script>
   </body>
 </html>
