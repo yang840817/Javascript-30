@@ -95,6 +95,39 @@
       </div>
     </div>
 
-    <script></script>
+    <script>
+      (function () {
+        let lastIndex = null;
+        const checkboxList = [...document.querySelectorAll(".item input")];
+
+        checkboxList.forEach((node) =>
+          node.addEventListener("click", checkHandler)
+        );
+
+        function checkHandler(e) {
+          const currentIndex = checkboxList.findIndex((node) => node === this);
+          if (e.shiftKey && lastIndex !== null) {
+            checkboxList
+              .slice(
+                Math.min(lastIndex, currentIndex),
+                Math.max(lastIndex, currentIndex) + 1
+              )
+              .forEach((node) => {
+                node.checked = this.checked;
+              });
+            // if (lastIndex > currentIndex) {
+            //   for (let index = lastIndex; index > currentIndex; index--) {
+            //     checkboxList[index].checked = e.target.checked;
+            //   }
+            // } else {
+            //   for (let index = lastIndex; index < currentIndex; index++) {
+            //     checkboxList[index].checked = e.target.checked;
+            //   }
+            // }
+          }
+          lastIndex = currentIndex;
+        }
+      })();
+    </script>
   </body>
 </html>
