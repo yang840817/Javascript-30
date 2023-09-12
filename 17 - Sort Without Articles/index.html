@@ -45,21 +45,47 @@
     <ul id="bands"></ul>
 
     <script>
-      const bands = [
-        "The Plot in You",
-        "The Devil Wears Prada",
-        "Pierce the Veil",
-        "Norma Jean",
-        "The Bled",
-        "Say Anything",
-        "The Midway State",
-        "We Came as Romans",
-        "Counterparts",
-        "Oh, Sleeper",
-        "A Skylit Drive",
-        "Anywhere But Here",
-        "An Old Dog",
-      ];
+      (() => {
+        const bands = [
+          "The Plot in You",
+          "The Devil Wears Prada",
+          "Pierce the Veil",
+          "Norma Jean",
+          "The Bled",
+          "Say Anything",
+          "The Midway State",
+          "We Came as Romans",
+          "Counterparts",
+          "Oh, Sleeper",
+          "A Skylit Drive",
+          "Anywhere But Here",
+          "An Old Dog",
+        ];
+        const ul = document.querySelector("#bands");
+        const fragment = document.createDocumentFragment();
+        bands
+          .sort((a, b) => {
+            return replaceArticle(a) > replaceArticle(b) ? 1 : -1;
+          })
+          .forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            fragment.appendChild(li);
+          });
+        ul.appendChild(fragment);
+      })();
+      function replaceArticle(str) {
+        return str.replace(/^(a |the |an )/i, "").trim();
+      }
+      // bands
+      //   .sort((a, b) => {
+      //     return a.replace("The ", "").replace("A ", "").replace("An ", "") >
+      //       b.replace("The ", "").replace("A ", "").replace("An ", "")
+      //       ? 1
+      //       : -1;
+      //   })
+
+      console.log(bands);
     </script>
   </body>
 </html>
