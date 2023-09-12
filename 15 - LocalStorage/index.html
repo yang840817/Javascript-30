@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>LocalStorage</title>
+    <link
+      rel="stylesheet"
+      href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css"
+    />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
@@ -57,7 +61,63 @@
     <script>
       const addItems = document.querySelector(".add-items");
       const itemsList = document.querySelector(".plates");
-      const items = [];
+      const items = JSON.parse(localStorage.getItem("items")) || [];
+
+      renderItems(itemsList, items);
+      itemsList.addEventListener("click", handleInputClick);
+      addItems.addEventListener("submit", addItem);
+
+      function handleInputClick(e) {
+        if (e.target.matches("label")) {
+          items[e.target.parentNode.id].done =
+            !items[e.target.parentNode.id].done;
+          localStorage.setItem("items", JSON.stringify(items));
+          renderItems(itemsList, items);
+        } else if (e.target.matches("i")) {
+          items.splice(e.target.parentNode.id, 1);
+          localStorage.setItem("items", JSON.stringify(items));
+          renderItems(itemsList, items);
+        }
+      }
+
+      function addItem(e) {
+        e.preventDefault();
+        const text = this.querySelector('input[name="item"]').value;
+        const item = {
+          text,
+          done: false,
+        };
+        items.push(item);
+        localStorage.setItem("items", JSON.stringify(items));
+        renderItems(itemsList, items);
+        this.reset();
+      }
+
+      function renderItems(itemsList, items) {
+        while (itemsList.firstChild) {
+          itemsList.removeChild(itemsList.firstChild);
+        }
+        const fragment = document.createDocumentFragment();
+        items.forEach((element, index) => {
+          const li = document.createElement("li");
+          li.id = index;
+          const input = document.createElement("input");
+          input.type = "checkbox";
+          input.id = `item${index}`;
+          input.defaultChecked = element.done;
+          input.checked = element.done;
+          li.appendChild(input);
+          const label = document.createElement("label");
+          label.htmlFor = `item${index}`;
+          label.textContent = element.text;
+          li.appendChild(label);
+          const i = document.createElement("i");
+          i.classList.add("fa-solid", "fa-trash-can");
+          li.appendChild(i);
+          fragment.appendChild(li);
+        });
+        itemsList.appendChild(fragment);
+      }
     </script>
   </body>
 </html>

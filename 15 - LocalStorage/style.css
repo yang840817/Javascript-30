@@ -50,6 +50,7 @@ h2 {
   padding: 10px 0;
   font-weight: 100;
   display: flex;
+  align-items: center;
 }
 
 .plates label {
@@ -68,6 +69,10 @@ h2 {
 
 .plates input:checked + label:before {
   content: "🌮";
+}
+.plates i {
+  color: red;
+  cursor: pointer;
 }
 
 .add-items {
