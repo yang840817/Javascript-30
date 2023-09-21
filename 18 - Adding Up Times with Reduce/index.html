@@ -66,6 +66,23 @@
       <li data-time="1:56">Video 57</li>
       <li data-time="4:04">Video 58</li>
     </ul>
-    <script></script>
+    <script>
+      const videoList = [...document.querySelectorAll("li[data-time]")];
+      const videoTimes = videoList.map((node) => {
+        const [minutes, seconds] = node.dataset.time.split(":");
+        return Number(minutes) * 60 + Number(seconds);
+      });
+      const totalSeconds = videoTimes.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      );
+      console.log(formatTime(totalSeconds));
+      function formatTime(totalSeconds) {
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${hours}:${minutes}:${seconds}`;
+      }
+    </script>
   </body>
 </html>
