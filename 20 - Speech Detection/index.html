@@ -3,14 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <title>Speech Detection</title>
+    <link
+      rel="stylesheet"
+      href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css"
+    />
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <div class="words" contenteditable></div>
+    <div class="words">
+      <a class="mic"><i class="fa-solid fa-microphone"></i></a>
+    </div>
 
     <script>
       window.SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      const recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+      recognition.lang = "zh-TW";
+
+      const words = document.querySelector(".words");
+      const mic = document.querySelector(".mic");
+
+      mic.addEventListener("click", recognitionStart);
+      recognition.addEventListener("result", (e) => {
+        console.log(e);
+        const p = words.querySelector("p");
+        const transcript = Array.from(e.results)
+          .map((result) => result[0])
+          .map((result) => result.transcript)
+          .join("");
+
+        const greetReplaced = transcript.replace(/(你好|大家好)/g, "$1👋");
+        p.textContent = greetReplaced;
+
+        if (e.results[0].isFinal) {
+          p.setAttribute("contenteditable", "");
+          mic.style.color = "";
+        }
+      });
+
+      function recognitionStart(e) {
+        mic.style.color = "red";
+        let p = document.createElement("p");
+        words.insertBefore(p, words.firstChild);
+        recognition.start();
+      }
     </script>
 
     <style>
@@ -24,14 +62,21 @@
         font-weight: 200;
         font-size: 20px;
       }
-
+      .mic {
+        position: absolute;
+        top: 0;
+        right: 20px;
+        transform: translateY(25%);
+        cursor: pointer;
+      }
       .words {
+        position: relative;
         max-width: 500px;
         margin: 50px auto;
         background: white;
         border-radius: 5px;
         box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
-        padding: 1rem 2rem 1rem 5rem;
+        padding: 2rem 2rem 2rem 5rem;
         background: -webkit-gradient(
             linear,
             0 0,
