@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Video Speed Scrubber</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
-
-  <div class="wrapper">
-    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
-    <div class="speed">
-      <div class="speed-bar">1×</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video Speed Scrubber</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <video
+        class="flex"
+        width="765"
+        height="430"
+        src="../11 - Custom Video Player/652333414.mp4"
+        loop
+        controls
+      ></video>
+      <div class="speed">
+        <div class="speed-bar">1×</div>
+      </div>
     </div>
-  </div>
 
-<script>
-</script>
-</body>
+    <script>
+      const video = document.querySelector("video");
+      const speedContainer = document.querySelector(".speed");
+      const speedBar = document.querySelector(".speed-bar");
+
+      speedContainer.addEventListener("mousemove", handlePlayBackRate);
+
+      function handlePlayBackRate(e) {
+        const min = 0.4;
+        const max = 4;
+        const percent = e.offsetY / this.offsetHeight;
+        const videoRate = (percent * (max - min) + min).toFixed(2);
+
+        speedBar.style.height = `${Math.round(percent * 100)}%`;
+        speedBar.textContent = `${videoRate}x`;
+        video.playbackRate = videoRate;
+      }
+    </script>
+  </body>
 </html>

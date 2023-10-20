@@ -271,6 +271,23 @@
       </p>
     </div>
 
-    <script></script>
+    <script>
+      //  取得nav-bar節點
+      const nav = document.querySelector("nav");
+      //  針對視窗新增滾動事件監聽器
+      window.addEventListener("scroll", stickyNav);
+
+      function stickyNav() {
+        //  當滾動超過nav頂點時
+        // if (scrollY >= nav.offsetTop) {
+        if (0 >= nav.getBoundingClientRect().y) {
+          //  在body掛上`sticky-nav`class
+          document.body.classList.add("sticky-nav");
+          //  反之則移除class
+        } else {
+          document.body.classList.remove("sticky-nav");
+        }
+      }
+    </script>
   </body>
 </html>

@@ -27,6 +27,10 @@ body {
   transition: transform 0.5s;
 }
 
+.sticky-nav .site-wrap {
+  transform: scale(1);
+}
+
 header {
   text-align: center;
   height: 50vh;
@@ -45,11 +49,11 @@ h1 {
 }
 
 nav {
+  position: sticky;
   background: black;
   top: 0;
   width: 100%;
   transition: all 0.5s;
-  position: relative;
   z-index: 1;
 }
 
@@ -79,6 +83,10 @@ li.logo {
 
 li.logo a {
   color: black;
+}
+
+.sticky-nav li.logo {
+  max-width: 500px;
 }
 
 nav a {
